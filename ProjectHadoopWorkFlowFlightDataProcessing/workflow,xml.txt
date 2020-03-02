@@ -1,0 +1,203 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="FlightDataAnalysis">
+    <start to="onTimeScheduleAirlines"/>
+    <action name="onTimeScheduleAirlines">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                <delete path="${nameNode}/user/${wf:user()}/${examplesRoot}/output/OnTimeScheduleAirlines"/>
+            </prepare>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.map.class</name>
+                    <value>OnTimeScheduleMapper</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.reduce.class</name>
+                    <value>OnTimeScheduleReducer</value>
+                </property>
+				
+				<property>  
+                    <name>mapred.mapper.new-api</name>  
+                    <value>true</value>  
+                </property>  
+                <property>  
+                    <name>mapred.reducer.new-api</name>  
+                    <value>true</value>  
+                </property>  
+                <property>  
+                    <name>mapreduce.job.reduces</name>  
+                    <value>1</value>  
+                </property>  
+				
+				<property>
+                    <name>mapreduce.map.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapreduce.map.output.value.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.job.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.output.value.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.input.fileinputformat.inputdir</name>
+                    <value>${inputFilePath}</value>
+                </property>
+                <property>
+                    <name>mapreduce.output.fileoutputformat.outputdir</name>
+                    <value>/user/${wf:user()}/${examplesRoot}/output/OnTimeScheduleAirlines</value>
+                </property>
+            </configuration>
+        </map-reduce>
+        <ok to="airportsTaxiTime"/>
+        <error to="fail"/>
+    </action>
+	
+	 <action name="airportsTaxiTime">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                <delete path="${nameNode}/user/${wf:user()}/${examplesRoot}/output/AirportsTaxiTime"/>
+            </prepare>
+            <configuration>
+                 <property>
+                    <name>mapreduce.job.map.class</name>
+                    <value>AirportTaxiMapper</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.reduce.class</name>
+                    <value>AirportTaxiReducer</value>
+                </property>
+				
+				<property>  
+                    <name>mapred.mapper.new-api</name>  
+                    <value>true</value>  
+                </property>  
+                <property>  
+                    <name>mapred.reducer.new-api</name>  
+                    <value>true</value>  
+                </property>  
+                <property>  
+                    <name>mapreduce.job.reduces</name>  
+                    <value>1</value>  
+                </property>  
+				
+                <property>
+                    <name>mapreduce.map.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapreduce.map.output.value.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.job.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.output.value.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.input.fileinputformat.inputdir</name>
+                    <value>${inputFilePath}</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.output.fileoutputformat.outputdir</name>
+                    <value>/user/${wf:user()}/${examplesRoot}/output/AirportsTaxiTime</value>
+                </property>
+            </configuration>
+        </map-reduce>
+        <ok to="cancellations"/>
+        <error to="fail"/>
+    </action>
+	
+	
+	    <action name="cancellationReason">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                <delete path="${nameNode}/user/${wf:user()}/${examplesRoot}/output/CancellationReason"/>
+            </prepare>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.map.class</name>
+                    <value>ReasonForCancellationsMapper</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.reduce.class</name>
+                    <value>ReasonForCancellationsReducer</value>
+                </property>
+				
+				<property>  
+                    <name>mapred.mapper.new-api</name>  
+                    <value>true</value>  
+                </property>  
+                <property>  
+                    <name>mapred.reducer.new-api</name>  
+                    <value>true</value>  
+                </property>  
+                <property>  
+                    <name>mapreduce.job.reduces</name>  
+                    <value>1</value>  
+                </property>  
+				
+               <property>
+                    <name>mapreduce.map.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapreduce.map.output.value.class</name>
+                    <value>org.apache.hadoop.io.IntWritable</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.job.output.key.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+                <property>
+                    <name>mapreduce.job.output.value.class</name>
+                    <value>org.apache.hadoop.io.Text</value>
+                </property>
+				
+                <property>
+                    <name>mapreduce.input.fileinputformat.inputdir</name>
+                    <value>${inputFilePath}</value>
+                </property>
+                <property>
+                    <name>mapreduce.output.fileoutputformat.outputdir</name>
+                    <value>/user/${wf:user()}/${examplesRoot}/output/CancellationReason</value>
+                </property>
+            </configuration>
+        </map-reduce>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+	
+    <kill name="fail">
+        <message>Map/Reduce failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

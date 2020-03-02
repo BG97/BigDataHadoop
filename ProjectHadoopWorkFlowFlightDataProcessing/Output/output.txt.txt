@@ -1,0 +1,31 @@
+2VMs Execution Time:44 minutes 
+4VMs Execution Time:23 minutes 
+6VMs Execution Time:19 minutes 
+8VMs Execution Time:13 minutes 
+10VMs Execution Time:10 minutes
+
+On time schedule:
+-
+highest	
+HA	0.9130613247134968
+AQ	0.8704614308249784
+ML (1)	0.8068837801472822
+lowest	
+PI	0.6622176293682854
+EV	0.6931310266349684
+B6	0.7088574013567
+
+Airport Taxi ontime:
+-
+highest	
+CKB	197.85714285714286
+MKK	45.77816291161179
+VLD	22.280210396885032
+lowest	
+CYS	1.3333333333333333
+BFF	1.3333333333333333
+PVU	1.7692307692307692
+
+Cancellation Reasons:
+-
+Cancellation Code is A: carrier	The count is: 317868

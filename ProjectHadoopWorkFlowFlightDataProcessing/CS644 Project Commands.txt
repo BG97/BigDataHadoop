@@ -1,0 +1,56 @@
+Please see Powerpoints for Hadoop and Java set up:
+
+Commmands:
+1. Create a folder named input in /usr/local/hadoop:
+$ mkdir input
+
+2. Upload the entire data set to the input directory /usr/local/hadoop/input
+
+3. Start Hadoop Cluster and historyserver:
+$ cd $HADOOP_HOME
+$ hdfs namenode -format
+$ sbin/start-all.sh
+$ sbin/mr-jobhistory-daemon.sh start historyserver
+
+4.See the status of hadoop cluster, open any browser, type the following web address:
+Public DNS of master VM:50070 
+
+5. Upload input file to HDFS:
+$ hdfs dfs -mkdir -p input
+$ hdfs dfs -put input/* input
+
+6. Upload oozie's share file to HDFS:
+$ cd $OOZIE_HOME
+$ sudo tar xvf oozie-sharelib-4.3.0.tar.gz #change the sharelib name to your local sharelib name
+$ cd $HADOOP_HOME
+$ hdfs dfs -put $OOZIE_HOME/share share
+
+7. Upload workflow.xml to HDFS:
+$ hdfs dfs -mkdir cs644project
+$ hdfs dfs -put workflow.xml cs644project
+
+8. Compile the java files and make a jar file and upload the jar file to HDFS cs644project/lib:
+using eclipse to save .jar file and use WinCSP to upload it to master
+
+9. Initialize the database of oozie:
+$ $OOZIE_HOME/bin/ooziedb.sh create -sqlfile oozie.sql -run
+
+10. Start oozie:
+$ $OOZIE_HOME/bin/oozied.sh start
+
+11. Check the status of oozie (Normal):
+$ $OOZIE_HOME/bin/oozie admin -oozie http://localhost:11000/oozie -status
+
+12: Run Oozie program:
+$ oozie job -oozie http://localhost:11000/oozie -config job.properties -run
+
+13. See the job status in the oozie workflow, type this address in any web browser and get execution time:
+Public DNS of master VM:11000
+
+
+14. Get results (Also using the web explorer can download the files too):
+$ hdfs dfs -get cs644project/output output
+$ vim output/OnScheduleAirlines/part-r-00000
+$ vim output/AirportsTaxiTime/part-r-00000
+$ vim output/Cancellations/part-r-00000
+

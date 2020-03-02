@@ -1,0 +1,32 @@
+ 1. make input folder
+	mkdir input
+2. upload data to input folder
+3. start cluster
+cd $HADOOP_HOME
+sbin/start-all.sh
+sbin/mr-jobhistory-daemon.sh start historyserver
+4.hdfs dfs -mkdir -p input
+hdfs dfs -put input/* input
+5.oozie share folder
+cd $OOZIE_HOME
+sudo tar xvf oozie-sharelib-4.3.0.tar.gz 
+cd $HADOOP_HOME
+hdfs dfs -put $OOZIE_HOME/share share
+6.upload workflow.xml
+hdfs dfs -mkdir porject
+hdfs dfs -put workflow.xml project
+7.compile and make the jar file 
+hadoop com.sun.tools.javac.Main *.java
+jar cf project.jar *.class
+hdfs dfs -mkdir project/lib
+hdfs dfs -put project.jar project/lib
+$OOZIE_HOME/bin/ooziedb.sh create -sqlfile oozie.sql -run
+8.start oozie
+$OOZIE_HOME/bin/oozied.sh start
+9.run 
+oozie job -oozie http://localhost:11000/oozie -config job.properties -run
+10. see workflow
+VM:11000
+11.results
+hdfs dfs -get project/output output
+

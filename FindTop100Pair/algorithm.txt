@@ -1,0 +1,12 @@
+mapper:
+1.seperate the words, set the keys as text format so it can print it to hadoop.
+2.make a string builder and output the keys vals pair
+word 1
+word2 1
+word 1
+
+Reducer:
+frist: count how many value for a key(conbine)
+second: if the string match the pattern i created in mapper after split, sum up all the keys, and the using hashmap to output the (key,sum) pair format.
+else sum up all the key and then get the total sum of the key from hashmap hp; using these two value can get the relative number of certain key.
+Any keys score equal to 1 will be eliminate it. ANd get top 100 score of the pair list.(reduce)
